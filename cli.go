@@ -106,6 +106,9 @@ func (cli *CLI) Run(args []string) int {
 	flags.BoolVar(&githubAPIOpts.Draft, "draft", false, "")
 	flags.BoolVar(&githubAPIOpts.Prerelease, "prerelease", false, "")
 
+	flags.StringVar(&githubAPIOpts.Body, "body", "", "")
+	flags.StringVar(&githubAPIOpts.Body, "b", "", "")
+
 	// Options to change ghr work.
 	flags.IntVar(&ghrOpts.Parallel, "parallel", -1, "")
 	flags.IntVar(&ghrOpts.Parallel, "p", -1, "")
@@ -397,7 +400,7 @@ Options:
 Examples:
 
   $ ghr v1.0 dist/     Upload all artifacts which are in dist directory
-                       with version v1.0. 
+                       with version v1.0.
 
   $ ghr -stat         Show download number of each release and quit.
 

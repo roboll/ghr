@@ -157,6 +157,7 @@ func DeleteRelease(apiOpts *GitHubAPIOpts) (err error) {
 func CreateReleaseRequest(apiOpts *GitHubAPIOpts) *github.RepositoryRelease {
 	return &github.RepositoryRelease{
 		TagName:         &apiOpts.TagName,
+		Body:            &apiOpts.Body,
 		Draft:           &apiOpts.Draft,
 		Prerelease:      &apiOpts.Prerelease,
 		TargetCommitish: &apiOpts.TargetCommitish,
