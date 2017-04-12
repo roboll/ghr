@@ -3,6 +3,8 @@ package main
 import (
 	"time"
 
+	"golang.org/x/net/context"
+
 	"github.com/google/go-github/github"
 )
 
@@ -42,7 +44,7 @@ func CreateRelease(ghrOpts *GhrOpts, apiOpts *GitHubAPIOpts) (err error) {
 
 	// Create Release
 	request := CreateReleaseRequest(apiOpts)
-	rel, res, err := client.Repositories.CreateRelease(apiOpts.OwnerName, apiOpts.RepoName, request)
+	rel, res, err := client.Repositories.CreateRelease(context.TODO(), apiOpts.OwnerName, apiOpts.RepoName, request)
 	if err != nil {
 		return err
 	}
@@ -66,7 +68,7 @@ func GetReleaseID(apiOpts *GitHubAPIOpts) (err error) {
 	client := NewOAuthedClient(apiOpts)
 
 	// Fetch all releases on GitHub
-	releases, res, err := client.Repositories.ListReleases(apiOpts.OwnerName, apiOpts.RepoName, nil)
+	releases, res, err := client.Repositories.ListReleases(context.TODO(), apiOpts.OwnerName, apiOpts.RepoName, nil)
 	if err != nil {
 		return err
 	}
@@ -112,7 +114,7 @@ func DeleteRelease(apiOpts *GitHubAPIOpts) (err error) {
 	client := NewOAuthedClient(apiOpts)
 
 	// Delete release.
-	res, err := client.Repositories.DeleteRelease(apiOpts.OwnerName, apiOpts.RepoName, apiOpts.ID)
+	res, err := client.Repositories.DeleteRelease(context.TODO(), apiOpts.OwnerName, apiOpts.RepoName, apiOpts.ID)
 	if err != nil {
 		return err
 	}
@@ -131,7 +133,7 @@ func DeleteRelease(apiOpts *GitHubAPIOpts) (err error) {
 
 	// Delete tag related to its release
 	ref := "tags/" + apiOpts.TagName
-	res, err = client.Git.DeleteRef(apiOpts.OwnerName, apiOpts.RepoName, ref)
+	res, err = client.Git.DeleteRef(context.TODO(), apiOpts.OwnerName, apiOpts.RepoName, ref)
 	if err != nil {
 		return err
 	}

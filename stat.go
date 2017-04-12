@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"io"
+
+	"golang.org/x/net/context"
 )
 
 // Stat represent stat information
@@ -52,7 +54,7 @@ func GetStat(apiOpts *GitHubAPIOpts) (stats []*Stat, err error) {
 	client := NewOAuthedClient(apiOpts)
 
 	// Get All releases
-	releases, res, err := client.Repositories.ListReleases(apiOpts.OwnerName, apiOpts.RepoName, nil)
+	releases, res, err := client.Repositories.ListReleases(context.TODO(), apiOpts.OwnerName, apiOpts.RepoName, nil)
 	if err != nil {
 		return stats, err
 	}

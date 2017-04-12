@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"sync"
 
+	"golang.org/x/net/context"
+
 	"github.com/google/go-github/github"
 )
 
@@ -96,7 +98,7 @@ func UploadAsset(asset *Asset, apiOpts *GitHubAPIOpts) (err error) {
 	opts := &github.UploadOptions{Name: asset.Name}
 
 	// Release Asset
-	_, res, err := client.Repositories.UploadReleaseAsset(apiOpts.OwnerName, apiOpts.RepoName, apiOpts.ID, opts, file)
+	_, res, err := client.Repositories.UploadReleaseAsset(context.TODO(), apiOpts.OwnerName, apiOpts.RepoName, apiOpts.ID, opts, file)
 	if err != nil {
 		return err
 	}
@@ -115,7 +117,7 @@ func DeleteAsset(asset *Asset, apiOpts *GitHubAPIOpts) (err error) {
 	client := NewOAuthedClient(apiOpts)
 
 	// Delete asset on GitHub
-	res, err := client.Repositories.DeleteReleaseAsset(apiOpts.OwnerName, apiOpts.RepoName, asset.ID)
+	res, err := client.Repositories.DeleteReleaseAsset(context.TODO(), apiOpts.OwnerName, apiOpts.RepoName, asset.ID)
 	if err != nil {
 		return err
 	}
@@ -134,7 +136,7 @@ func FetchAssetID(assets []*Asset, apiOpts *GitHubAPIOpts) error {
 	client := NewOAuthedClient(apiOpts)
 
 	// Get all assets on Github related to its relase ID
-	releasedAssets, res, err := client.Repositories.ListReleaseAssets(apiOpts.OwnerName, apiOpts.RepoName, apiOpts.ID, nil)
+	releasedAssets, res, err := client.Repositories.ListReleaseAssets(context.TODO(), apiOpts.OwnerName, apiOpts.RepoName, apiOpts.ID, nil)
 	if err != nil {
 		return err
 	}
